@@ -1,0 +1,11 @@
+
+ƒ
+java:S1319C"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(”Ã’Ş
+x
+java:S1488"bImmediately return this expression instead of assigning it to the temporary variable "listTaches".(óÁí”
+x
+java:S1488'"]Immediately return this expression instead of assigning it to the temporary variable "tache".(Ú®åøÿÿÿÿ
+x
+java:S14880"]Immediately return this expression instead of assigning it to the temporary variable "tache".(ÙÔŒúÿÿÿÿ
+Y
+java:S1128">Remove this unused import 'tn.esprit.foyer.entities.Etudiant'.(å§çùÿÿÿÿ

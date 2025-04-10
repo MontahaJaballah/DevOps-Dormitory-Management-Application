@@ -1,0 +1,9 @@
+
+m
+java:S3655&"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(ƒ–ß«8»ëÅã°2
+W
+java:S1854":Remove this useless assignment to local variable "foyer1".(Íğş8¿ëÅã°2
+G	java:S106"+Replace this use of System.out by a logger.(ª•·ª8ÙÜÒã°2
+H
+java:S1481"+Remove this unused "foyer1" local variable.(Íğş8ÂëÅã°2
+]	java:S125%"<This block of commented-out lines of code should be removed.(éúğûıÿÿÿÿ8ÅëÅã°2
