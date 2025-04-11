@@ -2,7 +2,6 @@ package tn.esprit.foyer.services;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 @Slf4j
 public class ReservationServicImpl implements IReservationService {
 
