@@ -26,5 +26,6 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    command: [ "java", "-jar", "/app/4TWIN4-BugBusters-Foyer.jar" ]
 volumes:
   db-data:
