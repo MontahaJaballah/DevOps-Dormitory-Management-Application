@@ -1,1 +1,5 @@
-foyer/target/
+# Before
+target/
+
+# After
+!foyer/target/4TWIN4-BugBusters-Foyer.jar
