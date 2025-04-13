@@ -14,8 +14,7 @@ import java.util.List;
 public class ReservationRestController {
     IReservationService reservationService;
 
-    // http://localhost:8089/foyer/reservation/RES130
-    @GetMapping("/{reservationId}")
+    @GetMapping("/retrieve-reservation/{reservationId}")
     @ResponseBody
     public Reservation retrieveReservation(@PathVariable("reservationId") String reservationId) {
         return reservationService.retrieveReservation(reservationId);
