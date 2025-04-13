@@ -1,31 +1,62 @@
 version: '3.8'
+
 services:
-  mysql-db:
+  mysql:
     image: mysql:8.0
+    container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: foyer_db
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: foyer
     ports:
       - "3306:3306"
+    networks:
+      - my_network
     volumes:
-      - db-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
+    restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
-  spring-app:
+
+  springboot:
     image: montahajaballah/montahabenjaballah_bugbusters_foyer:latest
-    ports:
-      - "8080:8080"
-    depends_on:
-      mysql-db:
-        condition: service_healthy
+    container_name: springboot
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/foyer_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foyer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_PASSWORD: ''
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-    command: [ "java", "-jar", "/app/4TWIN4-BugBusters-Foyer.jar" ]
+      SERVER_PORT: 8089
+      SERVER_SERVLET_CONTEXT_PATH: /foyer
+      LOGGING_LEVEL_COM_ZAXXER_HIKARI: DEBUG
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: DEBUG
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_PATTERN_CONSOLE: "%d{yyyy-MM-dd HH:mm:ss} - %-5level - %logger{60} - %msg%n"
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_TRANSACTION: DEBUG
+      LOGGING_LEVEL_ORG_HIBERNATE_ENGINE_TRANSACTION: DEBUG
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: DEBUG
+      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: TRACE
+    ports:
+      - "8089:8089"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - my_network
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8089/foyer/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  my_network:
+    driver: bridge
+
 volumes:
-  db-data:
+  mysql-data:

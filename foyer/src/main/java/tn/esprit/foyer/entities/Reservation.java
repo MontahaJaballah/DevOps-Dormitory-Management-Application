@@ -5,11 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,14 +19,11 @@ import java.util.List;
 public class Reservation implements Serializable {
     @Id
     @Column(name="idReservation",length = 50)
-    String idReservation; // Clé primaire
-   // @Temporal(TemporalType.DATE)
-   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy")
+    String idReservation;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate anneeUniversitaire;
     Boolean estValid;
-    @ManyToMany()
+    @ManyToMany
     @JsonIgnore
     List<Etudiant> etudiants;
-
 }
-
