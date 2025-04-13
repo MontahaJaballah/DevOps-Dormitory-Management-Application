@@ -55,8 +55,12 @@ services:
       start_period: 60s
 
   sonarqube:
-    image: sonarqube:community
+    image: sonarqube:latest
     container_name: sonarqube
+    environment:
+      SONAR_JDBC_URL: jdbc:mysql://mysql:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+      SONAR_JDBC_USERNAME: root
+      SONAR_JDBC_PASSWORD: ''
     ports:
       - "9000:9000"
     networks:
@@ -65,41 +69,10 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_logs:/opt/sonarqube/logs
       - sonarqube_extensions:/opt/sonarqube/extensions
-    environment:
-      - SONAR_JDBC_URL=jdbc:postgresql://sonarqube-db:5432/sonar
-      - SONAR_JDBC_USERNAME=sonar
-      - SONAR_JDBC_PASSWORD=sonar
-      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true  # Disable bootstrap checks
-      - SONAR_JVM_OPTS=-Xmx2g -Xms2g
-      - SONAR_ES_JVM_OPTS=-Xms512m -Xmx512m  # Increase Elasticsearch memory
     depends_on:
-      sonarqube-db:
+      mysql:
         condition: service_healthy
     restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/api/system/status"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 300s
-
-  sonarqube-db:
-    image: postgres:13
-    container_name: sonarqube-db
-    networks:
-      - my_network
-    volumes:
-      - sonarqube_db_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=sonar
-      - POSTGRES_PASSWORD=sonar
-      - POSTGRES_DB=sonar
-    restart: always
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "sonar"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 networks:
   my_network:
@@ -110,4 +83,3 @@ volumes:
   sonarqube_data:
   sonarqube_logs:
   sonarqube_extensions:
-  sonarqube_db_data:
