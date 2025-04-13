@@ -5,7 +5,7 @@ services:
     image: mysql:8.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ROOT_PASSWORD: ''  # Consider setting a secure password for production
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_DATABASE: foyer
     ports:
@@ -52,7 +52,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 30s
+      start_period: 60s  # Increased to 60s to give Spring Boot more time to start
 
   sonarqube:
     image: sonarqube:community
@@ -69,6 +69,8 @@ services:
       - SONAR_JDBC_URL=jdbc:postgresql://sonarqube-db:5432/sonar
       - SONAR_JDBC_USERNAME=sonar
       - SONAR_JDBC_PASSWORD=sonar
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=false
+      - SONAR_JVM_OPTS=-Xmx2g -Xms2g  # Added to allocate 2GB of memory
     depends_on:
       sonarqube-db:
         condition: service_healthy
@@ -78,7 +80,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 120s  # Increased to 2 minutes to give SonarQube more time to start
+      start_period: 300s  # Increased to 5 minutes
 
   sonarqube-db:
     image: postgres:13
