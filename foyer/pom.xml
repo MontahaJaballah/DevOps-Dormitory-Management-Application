@@ -34,11 +34,6 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.0.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.2.0</version>
 		</dependency>
 		<dependency>
@@ -58,7 +53,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>4TWIN4-BugBusters-Foyer</finalName> <!-- Set the JAR name -->
+		<finalName>4TWIN4-BugBusters-Foyer</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -72,11 +67,10 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<!-- Add Hibernate Bytecode Enhancement Plugin -->
 			<plugin>
 				<groupId>org.hibernate.orm.tooling</groupId>
 				<artifactId>hibernate-enhance-maven-plugin</artifactId>
-				<version>6.2.0.Final</version> <!-- Match your Hibernate version -->
+				<version>6.2.0.Final</version>
 				<executions>
 					<execution>
 						<configuration>
@@ -90,7 +84,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- JaCoCo Plugin -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -110,8 +103,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<!-- SonarQube Plugin -->
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
@@ -119,4 +110,17 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>nexus-releases</id>
+			<name>Foyer Releases</name>
+			<url>http://localhost:8081/repository/foyer-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<name>Foyer Snapshots</name>
+			<url>http://localhost:8081/repository/foyer-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
