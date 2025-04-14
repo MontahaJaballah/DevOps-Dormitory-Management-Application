@@ -6,6 +6,7 @@ services:
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: foyer
     ports:
       - "3306:3306"
