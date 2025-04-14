@@ -40,7 +40,7 @@ services:
       - my_network
     restart: always
     healthcheck:
-      test: [ "CMD", "pgrep", "java" ]  # Check if the Java process is running
+      test: [ "CMD-SHELL", "ps aux | grep java | grep -v grep" ]  # Updated health check
       interval: 10s
       timeout: 10s
       retries: 5
