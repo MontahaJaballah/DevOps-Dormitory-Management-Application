@@ -5,8 +5,7 @@ services:
     image: mysql:8.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ''  # Consider setting a secure password for production
-      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_ROOT_PASSWORD: yourStrongPassword
       MYSQL_DATABASE: foyer
     ports:
       - "3306:3306"
@@ -27,18 +26,10 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foyer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ''
+      SPRING_DATASOURCE_PASSWORD: yourStrongPassword
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SERVER_PORT: 8089
       SERVER_SERVLET_CONTEXT_PATH: /foyer
-      LOGGING_LEVEL_COM_ZAXXER_HIKARI: DEBUG
-      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: DEBUG
-      LOGGING_LEVEL_ROOT: INFO
-      LOGGING_PATTERN_CONSOLE: "%d{yyyy-MM-dd HH:mm:ss} - %-5level - %logger{60} - %msg%n"
-      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_TRANSACTION: DEBUG
-      LOGGING_LEVEL_ORG_HIBERNATE_ENGINE_TRANSACTION: DEBUG
-      LOGGING_LEVEL_ORG_HIBERNATE_SQL: DEBUG
-      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: TRACE
     ports:
       - "8089:8089"
     depends_on:
@@ -54,53 +45,9 @@ services:
       retries: 5
       start_period: 60s
 
-  sonarqube:
-    image: sonarqube:latest
-    container_name: sonarqube
-    environment:
-      SONAR_JDBC_URL: jdbc:postgresql://sonarqube-db:5432/sonar
-      SONAR_JDBC_USERNAME: sonar
-      SONAR_JDBC_PASSWORD: sonar
-      SONAR_JVM_OPTS: -Xmx2g -Xms2g  # Increase memory for SonarQube
-      SONAR_ES_JVM_OPTS: -Xms512m -Xmx512m  # Increase memory for Elasticsearch
-    ports:
-      - "9000:9000"
-    networks:
-      - my_network
-    volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_logs:/opt/sonarqube/logs
-      - sonarqube_extensions:/opt/sonarqube/extensions
-    depends_on:
-      sonarqube-db:
-        condition: service_healthy
-    restart: always
-
-  sonarqube-db:
-    image: postgres:13
-    container_name: sonarqube-db
-    networks:
-      - my_network
-    volumes:
-      - sonarqube_db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: sonar
-      POSTGRES_PASSWORD: sonar
-      POSTGRES_DB: sonar
-    restart: always
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "sonar"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
 networks:
   my_network:
     driver: bridge
 
 volumes:
   mysql-data:
-  sonarqube_data:
-  sonarqube_logs:
-  sonarqube_extensions:
-  sonarqube_db_data:
