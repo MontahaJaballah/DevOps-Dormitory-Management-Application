@@ -15,6 +15,7 @@
 	<description>foyer</description>
 	<properties>
 		<java.version>17</java.version>
+		<maven.deploy.skip>true</maven.deploy.skip> <!-- Skip default deployment -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -121,6 +122,7 @@
 						</goals>
 						<configuration>
 							<file>${project.build.directory}/${project.build.finalName}.jar</file>
+							<pomFile>${project.basedir}/pom.xml</pomFile>
 							<repositoryId>nexus-releases</repositoryId>
 							<url>http://localhost:8081/repository/foyer-releases/</url>
 							<groupId>${project.groupId}</groupId>
