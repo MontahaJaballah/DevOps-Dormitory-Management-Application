@@ -40,11 +40,11 @@ services:
       - my_network
     restart: always
     healthcheck:
-      test: [ "CMD", "pgrep", "java" ]  # Check if Java process is alive
+      test: [ "CMD-SHELL", "ps aux | grep java | grep -v grep" ]  # Updated health check
       interval: 10s
       timeout: 10s
       retries: 5
-      start_period: 120s  # Give 2 minutes to start
+      start_period: 120s
 
   sonarqube-db:
     image: postgres:13
