@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+mysql:
+image: mysql:8.0
+container_name: mysql
+environment:
+MYSQL_ROOT_PASSWORD: yourStrongPassword
+MYSQL_DATABASE: foyer
+ports:
+
+"3306:3306" networks:
+my_network volumes:
+mysql-data:/var/lib/mysql restart: always healthcheck: test: ["CMD", "mysqladmin", "ping", "-h", "localhost"] interval: 10s timeout: 5s retries: 5
+springboot:
+image: montahajaballah/montahabenjaballah_bugbusters_foyer:latest
+container_name: springboot
+environment:
+SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foyer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+SPRING_DATASOURCE_USERNAME: root
+SPRING_DATASOURCE_PASSWORD: yourStrongPassword
+SPRING_JPA_HIBERNATE_DDL_AUTO: update
+SERVER_PORT: 8089
+SERVER_SERVLET_CONTEXT_PATH: /foyer
+ports:
+
+"8089:8089" depends_on: mysql: condition: service_healthy networks:
+my_network restart: always healthcheck: test: ["CMD", "curl", "-f", "http://localhost:8089/foyer/actuator/health"] interval: 10s timeout: 5s retries: 5 start_period: 60s
+sonarqube-db:
+image: postgres:13
+container_name: sonarqube-db
+environment:
+POSTGRES_USER: sonar
+POSTGRES_PASSWORD: sonar
+POSTGRES_DB: sonar
+networks:
+
+my_network volumes:
+sonarqube_db_data:/var/lib/postgresql/data
+./pg_hba.conf:/etc/postgresql/pg_hba.conf command: ["postgres", "-c", "hba_file=/etc/postgresql/pg_hba.conf"] restart: always healthcheck: test: ["CMD-SHELL", "pg_isready -U sonar"] interval: 10s timeout: 5s retries: 5
+sonarqube:
+image: sonarqube:8.9.7-community
+container_name: sonarqube
+environment:
+SONAR_JDBC_URL: jdbc:postgresql://sonarqube-db:5432/sonar
+SONAR_JDBC_USERNAME: sonar
+SONAR_JDBC_PASSWORD: sonar
+SONAR_JVM_OPTS: -Xmx2g -Xms2g
+ports:
+
+"9000:9000" volumes:
+sonarqube_data:/opt/sonarqube/data
+sonarqube_logs:/opt/sonarqube/logs
+sonarqube_extensions:/opt/sonarqube/extensions depends_on: sonarqube-db: condition: service_healthy restart: always networks:
+my_network
+networks:
+my_network:
+driver: bridge
+
+volumes:
+mysql-data:
+sonarqube_data:
+sonarqube_logs:
+sonarqube_extensions:
+sonarqube_db_data:
