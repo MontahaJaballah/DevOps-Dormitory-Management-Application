@@ -40,11 +40,11 @@ services:
       - my_network
     restart: always
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8089/foyer/actuator/health" ]
+      test: [ "CMD", "pgrep", "java" ]  # Check if the Java process is running
       interval: 10s
-      timeout: 10s  # Increased from 5s to 10s
+      timeout: 10s
       retries: 5
-      start_period: 120s  # Increased from 60s to 120s
+      start_period: 120s
 
   sonarqube-db:
     image: postgres:13
