@@ -129,23 +129,11 @@
 							<artifactId>${project.artifactId}</artifactId>
 							<version>${project.version}</version>
 							<packaging>jar</packaging>
+							<generatePom>false</generatePom>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
-	<distributionManagement>
-		<repository>
-			<id>nexus-releases</id>
-			<name>Foyer Releases</name>
-			<url>http://localhost:8081/repository/foyer-releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>nexus-snapshots</id>
-			<name>Foyer Snapshots</name>
-			<url>http://localhost:8081/repository/foyer-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>
