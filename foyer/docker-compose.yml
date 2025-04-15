@@ -74,7 +74,7 @@ services:
         condition: service_healthy
     networks:
       - my_network
-    restart: "no"
+    restart: always
 
   node-exporter:
     image: prom/node-exporter:latest
