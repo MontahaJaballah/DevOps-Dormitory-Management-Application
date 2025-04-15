@@ -59,7 +59,7 @@ services:
     restart: always
 
   mysql-exporter:
-    image: prom/mysqld-exporter:0.15.0
+    image: prom/mysqld-exporter:v0.15.1
     container_name: mysql-exporter
     environment:
       - DATA_SOURCE_NAME=exporter:exporter_password@(mysql:3306)/foyer
