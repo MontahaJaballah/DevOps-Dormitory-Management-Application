@@ -3,21 +3,21 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
-# Alertmanager configuration (optional)
+# Alertmanager configuration (facultatif)
 alerting:
   alertmanagers:
     - static_configs:
         - targets:
           # - alertmanager:9093
 
-# Rule files (optional)
+# Règles d'alerte (facultatif)
 rule_files:
 # - "first_rules.yml"
 # - "second_rules.yml"
 
 # Scrape configurations
 scrape_configs:
-  # Prometheus itself
+  # Prometheus lui-même
   - job_name: "prometheus"
     static_configs:
       - targets: ["localhost:9090"]
@@ -28,18 +28,18 @@ scrape_configs:
     static_configs:
       - targets: ["172.25.123.208:8082"]
 
-  # Ubuntu machine (Node Exporter, updated to use host IP)
+  # Node Exporter (sur la machine Ubuntu)
   - job_name: "node-exporter"
     static_configs:
       - targets: ["172.25.123.208:9100"]
 
-  # Spring application (via Spring Actuator)
+  # Application Spring Boot
   - job_name: "spring-app"
     metrics_path: "/actuator/prometheus"
     static_configs:
       - targets: ["172.25.123.208:8089"]
 
-  # MySQL database (via MySQL Exporter)
+  # Exporter MySQL
   - job_name: "mysql"
     static_configs:
       - targets: ["mysql-exporter:9104"]
