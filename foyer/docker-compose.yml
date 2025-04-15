@@ -61,10 +61,10 @@ services:
   mysql-exporter:
     image: prom/mysqld-exporter:v0.15.1
     container_name: mysql-exporter
-    environment:
-      - DATA_SOURCE_NAME=exporter:@(mysql:3306)/foyer
-    volumes:
-      - ./my.cnf:/root/.my.cnf
+    command:
+      - --mysql.user=exporter
+      - --mysql.host=mysql
+      - --mysql.port=3306
     ports:
       - "9104:9104"
     depends_on:
