@@ -83,8 +83,8 @@ services:
   mysql-exporter:
     image: prom/mysqld-exporter:latest
     container_name: mysql-exporter
-    environment:
-      - DATA_SOURCE_NAME=exporter:exporterpass@(mysql:3306)/foyer
+    volumes:
+      - ./my.cnf:/root/.my.cnf
     ports:
       - "9104:9104"
     depends_on:
