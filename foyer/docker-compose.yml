@@ -52,14 +52,11 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /mnt/c/Users/tahab/OneDrive/Desktop/4TWIN4-BugBusters-Foyer/foyer/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /mnt/c/Users/tahab/OneDrive/Desktop/4TWIN4-BugBusters-Foyer/foyer:/etc/prometheus
       - prometheus-data:/prometheus
     networks:
       - my_network
     restart: always
-    dns:
-      - 8.8.8.8  # Google DNS
-      - 1.1.1.1 # Cloudflare DNS
 
   mysql-exporter:
     image: prom/mysqld-exporter:latest
