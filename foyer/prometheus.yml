@@ -35,9 +35,9 @@ scrape_configs:
 
   # Spring application (via Spring Actuator)
   - job_name: "spring-app"
-    metrics_path: "/actuator/prometheus"
+    metrics_path: "/foyer/actuator/prometheus"
     static_configs:
-      - targets: ["springboot:8089"]
+      - targets: ["172.25.123.208:8089""]
 
   # MySQL database (via MySQL Exporter)
   - job_name: "mysql"
