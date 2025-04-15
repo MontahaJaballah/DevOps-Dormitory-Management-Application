@@ -22,16 +22,16 @@ scrape_configs:
     static_configs:
       - targets: ["localhost:9090"]
 
-  # Jenkins (updated to use host IP)
+  # Jenkins
   - job_name: "jenkins"
     metrics_path: "/prometheus"
     static_configs:
       - targets: ["172.25.123.208:8082"]
 
-  # Ubuntu machine (Node Exporter)
+  # Ubuntu machine (Node Exporter, updated to use host IP)
   - job_name: "node-exporter"
     static_configs:
-      - targets: ["node-exporter:9100"]
+      - targets: ["172.25.123.208:9100"]
 
   # Spring application (via Spring Actuator)
   - job_name: "spring-app"
