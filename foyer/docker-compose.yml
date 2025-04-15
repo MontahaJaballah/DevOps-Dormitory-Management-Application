@@ -69,6 +69,17 @@ services:
       - my_network
     restart: always
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - my_network
+    restart: always
+
   mysql-exporter:
     image: prom/mysqld-exporter:latest
     container_name: mysql-exporter
@@ -168,3 +179,4 @@ volumes:
   sonarqube_db_data:
   nexus-data:
   prometheus-data:
+  grafana-data:
