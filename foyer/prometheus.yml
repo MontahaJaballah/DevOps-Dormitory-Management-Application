@@ -35,7 +35,7 @@ scrape_configs:
 
   # Spring application (via Spring Actuator)
   - job_name: "spring-app"
-    metrics_path: "/foyer/actuator/prometheus"
+    metrics_path: "/actuator/prometheus"
     static_configs:
       - targets: ["172.25.123.208:8089"]
 
