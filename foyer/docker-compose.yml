@@ -63,6 +63,8 @@ services:
     container_name: mysql-exporter
     environment:
       - DATA_SOURCE_NAME=exporter:@(172.18.0.2:3306)/foyer
+    volumes:
+      - ./my.cnf:/root/.my.cnf
     ports:
       - "9104:9104"
     depends_on:
