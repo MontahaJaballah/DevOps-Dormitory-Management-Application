@@ -58,6 +58,17 @@ services:
       - my_network
     restart: always
 
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - /mnt/c/Users/tahab/OneDrive/Desktop/4TWIN4-BugBusters-Foyer/foyer/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    networks:
+      - my_network
+    restart: always
+
   mysql-exporter:
     image: prom/mysqld-exporter:latest
     container_name: mysql-exporter
