@@ -84,7 +84,9 @@ services:
     image: prom/mysqld-exporter:latest
     container_name: mysql-exporter
     volumes:
-      - /mnt/c/my.cnf:/root/.my.cnf
+      - /mnt/c/my.cnf:/etc/mysqld-exporter/my.cnf
+    command:
+      - --config.my-cnf=/etc/mysqld-exporter/my.cnf
     ports:
       - "9104:9104"
     depends_on:
@@ -92,7 +94,8 @@ services:
         condition: service_healthy
     networks:
       - my_network
-
+    restart: always
+    
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
