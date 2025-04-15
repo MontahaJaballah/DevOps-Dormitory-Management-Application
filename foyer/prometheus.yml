@@ -3,17 +3,16 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
-# Alertmanager configuration (facultatif)
+# Alertmanager configuration
 alerting:
   alertmanagers:
     - static_configs:
         - targets:
           # - alertmanager:9093
 
-# Règles d'alerte (facultatif)
+# Règles d'alerte
 rule_files:
-# - "first_rules.yml"
-# - "second_rules.yml"
+  - "alert_rules.yml"
 
 # Scrape configurations
 scrape_configs:

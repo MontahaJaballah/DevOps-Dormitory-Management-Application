@@ -1,0 +1,19 @@
+groups:
+- name: mysql_alerts
+  rules:
+  - alert: MySQLDown
+    expr: mysql_up == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "MySQL instance {{ $labels.instance }} is down"
+      description: "{{ $labels.instance }} has been down for more than 5 minutes."
+  - alert: HighAbortedConnections
+    expr: rate(mysql_global_status_aborted_connects[5m]) > 10
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High aborted connections on MySQL {{ $labels.instance }}"
+      description: "{{ $labels.instance }} has a high rate of aborted connections ({{ $value }} per second) for more than 5 minutes."
