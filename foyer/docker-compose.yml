@@ -63,6 +63,8 @@ services:
     container_name: mysql-exporter
     environment:
       - DATA_SOURCE_NAME=exporter:exporter_password@(mysql:3306)/foyer
+    command:
+      - --config.my-cnf=""
     ports:
       - "9104:9104"
     depends_on:
