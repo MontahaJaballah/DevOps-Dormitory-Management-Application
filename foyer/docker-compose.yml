@@ -84,7 +84,7 @@ services:
     image: prom/mysqld-exporter:latest
     container_name: mysql-exporter
     volumes:
-      - /mnt/c/Users/tahab/OneDrive/Desktop/4TWIN4-BugBusters-Foyer/foyer/my.cnf:/root/.my.cnf
+      - /mnt/c/my.cnf:/root/.my.cnf
     ports:
       - "9104:9104"
     depends_on:
