@@ -57,6 +57,9 @@ services:
     networks:
       - my_network
     restart: always
+    dns:
+      - 8.8.8.8  # Google DNS
+      - 1.1.1.1 # Cloudflare DNS
 
   mysql-exporter:
     image: prom/mysqld-exporter:latest
