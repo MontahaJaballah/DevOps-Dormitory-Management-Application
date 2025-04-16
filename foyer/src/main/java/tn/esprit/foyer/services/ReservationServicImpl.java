@@ -162,4 +162,60 @@ public class ReservationServicImpl implements IReservationService {
                 }
         );
     }
+
+    @Transactional
+    public void reassignStudentsAfterCancellation(String canceledReservationId) {
+        Reservation canceledReservation = reservationRepository.findById(canceledReservationId).orElse(null);
+        if (canceledReservation == null) {
+            log.warn("Reservation with ID {} not found for reassignment.", canceledReservationId);
+            return;
+        }
+
+        List<Etudiant> affectedEtudiants = canceledReservation.getEtudiants();
+        if (affectedEtudiants == null || affectedEtudiants.isEmpty()) {
+            log.info("No students to reassign from reservation {}.", canceledReservationId);
+            return;
+        }
+
+        // Find available chambres for the current year
+        LocalDate currentYear = LocalDate.now();
+        List<Chambre> availableChambres = chambreRepository.findAll().stream()
+                .filter(chambre -> {
+                    long validReservations = chambre.getReservations().stream()
+                            .filter(r -> r.getAnneeUniversitaire() != null &&
+                                    r.getAnneeUniversitaire().getYear() == currentYear.getYear() &&
+                                    r.getEstValid())
+                            .count();
+                    return switch (chambre.getTypeC()) {
+                        case SIMPLE -> validReservations < 1;
+                        case DOUBLE -> validReservations < 2;
+                        case TRIPLE -> validReservations < 3;
+                    };
+                })
+                .toList();
+
+        if (availableChambres.isEmpty()) {
+            log.warn("No available chambres to reassign students from reservation {}.", canceledReservationId);
+            return;
+        }
+
+        // Reassign each student to the first available chambre
+        for (Etudiant etudiant : affectedEtudiants) {
+            Chambre newChambre = availableChambres.get(0);
+            Reservation newReservation = new Reservation();
+            newReservation.setIdReservation(generateReservationId(newChambre.getNumeroChambre(), etudiant.getCin(), currentYear.getYear()));
+
+            newReservation.setAnneeUniversitaire(currentYear);
+            newReservation.setEtudiants(List.of(etudiant));
+
+            reservationRepository.save(newReservation);
+            newChambre.getReservations().add(newReservation);
+            chambreRepository.save(newChambre);
+            etudiant.getReservations().add(newReservation);
+            etudiantRepository.save(etudiant);
+
+            log.info("Reassigned student with CIN {} to chambre {} with reservation {}.",
+                    etudiant.getCin(), newChambre.getNumeroChambre(), newReservation.getIdReservation());
+        }
+    }
 }

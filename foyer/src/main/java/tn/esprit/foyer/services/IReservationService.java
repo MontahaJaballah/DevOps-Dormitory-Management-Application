@@ -1,5 +1,6 @@
 package tn.esprit.foyer.services;
 
+import jakarta.transaction.Transactional;
 import tn.esprit.foyer.entities.Reservation;
 import java.time.LocalDate;
 import java.util.List;
@@ -12,9 +13,9 @@ public interface IReservationService {
     Reservation retrieveReservation(String idReservation);
     void removeReservation(String idReservation);
 
-    Reservation ajouterReservationEtAssignerAChambreEtAEtudiant (Reservation res, Long
-            numChambre, long cin) ;
+    Reservation ajouterReservationEtAssignerAChambreEtAEtudiant(Reservation res, Long numChambre, long cin);
 
-    List<Reservation> getReservationParAnneeUniversitaire(LocalDate dateDebut, LocalDate dateFin) ;
-
+    List<Reservation> getReservationParAnneeUniversitaire(LocalDate dateDebut, LocalDate dateFin);
+    @Transactional
+    void reassignStudentsAfterCancellation(String canceledReservationId);
 }
