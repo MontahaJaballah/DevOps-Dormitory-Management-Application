@@ -15,6 +15,8 @@ import tn.esprit.foyer.repository.EtudiantRepository;
 import tn.esprit.foyer.repository.ReservationRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -171,5 +173,50 @@ public class ReservationServiceImplTest {
         assertNotNull(chambre.getReservations());
         assertEquals(1, chambre.getReservations().size());
         assertTrue(chambre.getReservations().contains(reservation));
+    }
+
+    @Test
+    void testReassignStudentsAfterCancellation_NoStudentsToReassign() {
+        reservation.setEtudiants(new ArrayList<>());
+        when(reservationRepository.findById("RES123")).thenReturn(Optional.of(reservation));
+
+        reservationService.reassignStudentsAfterCancellation("RES123");
+
+        verify(reservationRepository, never()).save(any(Reservation.class));
+        verify(chambreRepository, never()).save(any(Chambre.class));
+        verify(etudiantRepository, never()).save(any(Etudiant.class));
+    }
+
+    @Test
+    void testReassignStudentsAfterCancellation_NoAvailableChambres() {
+        reservation.getEtudiants().add(etudiant);
+        chambre.setTypeC(TypeChambre.SIMPLE);
+        Reservation existingReservation = new Reservation();
+        existingReservation.setIdReservation("RES456");
+        existingReservation.setAnneeUniversitaire(LocalDate.now());
+        existingReservation.setEstValid(true);
+        chambre.getReservations().add(existingReservation);
+
+        when(reservationRepository.findById("RES123")).thenReturn(Optional.of(reservation));
+        when(chambreRepository.findAll()).thenReturn(List.of(chambre));
+
+        reservationService.reassignStudentsAfterCancellation("RES123");
+
+        verify(reservationRepository, never()).save(any(Reservation.class));
+        verify(chambreRepository, never()).save(any(Chambre.class));
+        verify(etudiantRepository, never()).save(any(Etudiant.class));
+        assertEquals(1, chambre.getReservations().size());
+        assertTrue(chambre.getReservations().contains(existingReservation));
+    }
+
+    @Test
+    void testReassignStudentsAfterCancellation_ReservationNotFound() {
+        when(reservationRepository.findById("RES123")).thenReturn(Optional.empty());
+
+        reservationService.reassignStudentsAfterCancellation("RES123");
+
+        verify(reservationRepository, never()).save(any(Reservation.class));
+        verify(chambreRepository, never()).save(any(Chambre.class));
+        verify(etudiantRepository, never()).save(any(Etudiant.class));
     }
 }
