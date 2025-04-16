@@ -95,7 +95,7 @@ services:
     networks:
       - my_network
     restart: always
-    
+
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
@@ -177,4 +177,4 @@ volumes:
   sonarqube_db_data:
   nexus-data:
   prometheus-data:
-  grafana-data:
+  grafana-data:ss
