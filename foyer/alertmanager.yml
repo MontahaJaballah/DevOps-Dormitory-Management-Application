@@ -3,8 +3,7 @@ global:
   smtp_smarthost: 'smtp.gmail.com:587'
   smtp_from: 'montahabenjabalah@gmail.com'
   smtp_auth_username: 'montahabenjabalah@gmail.com'
-  smtp_auth_password: 'bjhrbrtomwxgdxxs
-'
+  smtp_auth_password: 'bjhrbrtomwxgdxxs'
 
 route:
   receiver: 'email'
