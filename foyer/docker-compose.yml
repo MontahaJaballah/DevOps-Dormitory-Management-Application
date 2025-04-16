@@ -177,4 +177,4 @@ volumes:
   sonarqube_db_data:
   nexus-data:
   prometheus-data:
-  grafana-data:ss
+  grafana-data:
