@@ -1,6 +1,5 @@
 package tn.esprit.foyer.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,20 +14,22 @@ import java.util.List;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
 public class Foyer implements Serializable {
-    @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idFoyer; // Clé primaire
+
     @Column(nullable = false)
     String nomFoyer;
+
     Long capaciteFoyer;
-    @OneToMany(mappedBy ="foyer",  cascade = CascadeType.ALL)
-    // @JsonIgnore
-    List<Bloc> blocs;
+
+    @OneToMany(mappedBy = "foyer", cascade = CascadeType.ALL)
+    transient List<Bloc> blocs;
+
     @OneToOne
     Universite universite;
-
 }
-

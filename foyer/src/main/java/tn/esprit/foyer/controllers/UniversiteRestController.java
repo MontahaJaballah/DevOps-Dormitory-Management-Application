@@ -11,12 +11,12 @@ import java.util.List;
 @RequestMapping("/universite")
 public class UniversiteRestController {
     IUniversiteService universiteService;
+
     // http://localhost:8089/foyer/universite/retrieve-all-universites
     @GetMapping("/retrieve-all-universites")
     @ResponseBody
     public List<Universite> getUniversites() {
-        List<Universite> listUniversites = universiteService.retrieveAllUniversites();
-        return listUniversites;
+        return universiteService.retrieveAllUniversites();
     }
 
     // http://localhost:8089/foyer/universite/retrieve-universite/8
@@ -30,17 +30,16 @@ public class UniversiteRestController {
     @PostMapping("/add-universite")
     @ResponseBody
     public Universite addUniversite(@RequestBody Universite u) {
-        Universite universite= universiteService.addUniversite(u);
-        return universite;
+        return universiteService.addUniversite(u);
     }
 
     // http://localhost:8089/foyer/universite/update-universite
     @PutMapping("/update-universite")
     @ResponseBody
     public Universite updateUniversite(@RequestBody Universite u) {
-        Universite universite= universiteService.updateUniversite(u);
-        return universite;
+        return universiteService.updateUniversite(u);
     }
+
     // http://localhost:8089/foyer/universite/removeUniversite
     @DeleteMapping("/removeUniversite/{idUniversite}")
     @ResponseBody
@@ -51,17 +50,16 @@ public class UniversiteRestController {
     // http://localhost:8089/foyer/universite/affecterFoyerAUniversite/1/esprit
     @PutMapping("/affecterFoyerAUniversite/{idFoyer}/{nomUniversite}")
     @ResponseBody
-    public Universite affecterFoyerAUniversite (@PathVariable("idFoyer") long idFoyer,
-                                                @PathVariable("nomUniversite") String nomUniversite) {
-        return universiteService.affecterFoyerAUniversite(idFoyer,nomUniversite);
+    public Universite affecterFoyerAUniversite(@PathVariable("idFoyer") long idFoyer,
+                                               @PathVariable("nomUniversite") String nomUniversite) {
+        return universiteService.affecterFoyerAUniversite(idFoyer, nomUniversite);
     }
 
     // http://localhost:8089/foyer/universite/desaffecterFoyerAUniversite/1/1
     @PutMapping("/desaffecterFoyerAUniversite/{idFoyer}/{idUniversite}")
     @ResponseBody
-    public Universite desaffecterFoyerAUniversite (@PathVariable("idFoyer") long idFoyer) {
+    public Universite desaffecterFoyerAUniversite(@PathVariable("idFoyer") long idFoyer) {
         universiteService.desaffecterFoyerAUniversite(idFoyer);
         return null;
     }
-
 }

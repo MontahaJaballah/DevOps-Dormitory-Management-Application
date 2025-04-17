@@ -9,12 +9,13 @@ import tn.esprit.foyer.entities.Chambre;
 import tn.esprit.foyer.repository.BlocRepository;
 import tn.esprit.foyer.repository.ChambreRepository;
 import tn.esprit.foyer.repository.ReservationRepository;
+
 import java.util.List;
+
 @Service
 @Slf4j
 @AllArgsConstructor
-public class BlocServiceImpl implements IBlocService{
-
+public class BlocServiceImpl implements IBlocService {
 
     BlocRepository blocRepository;
     ChambreRepository chambreRepository;
@@ -27,8 +28,7 @@ public class BlocServiceImpl implements IBlocService{
 
     @Override
     public Bloc addBloc(Bloc b) {
-
-        System.out.println("entrée dans la méthode addBloc sysout");
+        log.info("Entrée dans la méthode addBloc");
         log.trace("entrée dans la méthode addBloc logging");
         return blocRepository.save(b);
     }
@@ -45,24 +45,21 @@ public class BlocServiceImpl implements IBlocService{
 
     @Override
     public void removeBloc(Long idBloc) {
-        log.debug("debugging");
+        log.debug("Suppression du bloc avec ID: {}", idBloc);
         blocRepository.deleteById(idBloc);
-
     }
 
     @Override
     public List<Bloc> findByFoyerUniversiteIdUniversite(Long idUniversite) {
-      //  return blocRepository.findByFoyerUniversiteIdUniversite(idUniversite);
-          return  blocRepository.findByFoyerUniversite(idUniversite);
+        return blocRepository.findByFoyerUniversite(idUniversite);
     }
+
     @Override
-    public Bloc affecterChambresABloc (List<Long> numChambre, String nomBloc) {
-        Bloc bloc = blocRepository.findByNomBloc(nomBloc);
-        // ou bien tu récupére la liste de tous les chambres par keyword
-        // List<Chambre> findByNumChambre( numChambre); chambreRepo
-        numChambre.stream().forEach(
+    public Bloc affecterChambresABloc(List<Long> numChambre, String nomBloc) {
+        var bloc = blocRepository.findByNomBloc(nomBloc);
+        numChambre.forEach(
                 chambreNumber -> {
-                    Chambre c = chambreRepository.findByNumeroChambre(chambreNumber);
+                    var c = chambreRepository.findByNumeroChambre(chambreNumber);
                     c.setBloc(bloc);
                     chambreRepository.save(c);
                 }
@@ -70,35 +67,24 @@ public class BlocServiceImpl implements IBlocService{
         return bloc;
     }
 
-  //  @Scheduled(fixedRate = 60000)
+    // @Scheduled(fixedRate = 60000)
     public void fixedRateMethod() {
-        log.info("Method scheduler with fixed Rate");
+        log.info("Méthode planifiée exécutée à intervalle fixe");
     }
-
-
 
     @Scheduled(fixedRate = 60000)
     public void listeChambresParBloc() {
-     List<Bloc> blocs = blocRepository.findAll();
-     blocs.stream().forEach(
-             bloc -> {
-                 if(bloc.getChambres()!=null)
-                 {
-                     log.info("bloc : "+ bloc.getNomBloc()+ " ayant une capacité de : "+bloc.getCapaciteBloc());
-                     log.info("Liste des chambres du bloc "+bloc.getNomBloc()+ " : ");
-                     bloc.getChambres().stream().forEach(
-                             chambre -> {
-                                 log.info("chambre numéro "+ chambre.getNumeroChambre()+" de type "+chambre.getTypeC());
-                             }
-                     );
-                 }
-                 else
-                 {
-                     log.info("bloc : "+ bloc.getNomBloc()+ " ayant une capacité de : "+bloc.getCapaciteBloc());
-                     log.info("bloc vide pour le moment");
-                 }
-             }
-     );
+        var blocs = blocRepository.findAll();
+        blocs.forEach(bloc -> {
+            log.info("Bloc : {} avec une capacité de : {}", bloc.getNomBloc(), bloc.getCapaciteBloc());
+            if (bloc.getChambres() != null && !bloc.getChambres().isEmpty()) {
+                log.info("Liste des chambres du bloc {} :", bloc.getNomBloc());
+                bloc.getChambres().forEach(chambre ->
+                        log.info("Chambre numéro {} de type {}", chambre.getNumeroChambre(), chambre.getTypeC())
+                );
+            } else {
+                log.info("Bloc vide pour le moment");
+            }
+        });
     }
-
 }

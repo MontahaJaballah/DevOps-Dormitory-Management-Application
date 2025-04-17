@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class FoyerServiceImpl implements  IFoyerService{
+public class FoyerServiceImpl implements IFoyerService {
 
     FoyerRepository foyerRepository;
     BlocRepository blocRepository;
@@ -24,16 +24,13 @@ public class FoyerServiceImpl implements  IFoyerService{
 
     @Override
     public Foyer addFoyer(Foyer f) {
-
         return foyerRepository.save(f);
     }
 
     @Override
     public Foyer addFoyerWithBloc(Foyer f) {
-
-        Foyer foyer = foyerRepository.save(f);
-        f.getBlocs().forEach(bloc ->
-        {
+        var foyer = foyerRepository.save(f);
+        f.getBlocs().forEach(bloc -> {
             bloc.setFoyer(foyer);
             blocRepository.save(bloc);
         });
@@ -47,12 +44,11 @@ public class FoyerServiceImpl implements  IFoyerService{
 
     @Override
     public Foyer retrieveFoyer(Long idFoyer) {
-            return foyerRepository.findById(idFoyer).orElse(null);
+        return foyerRepository.findById(idFoyer).orElse(null);
     }
 
     @Override
     public void removeFoyer(Long idFoyer) {
-
         foyerRepository.deleteById(idFoyer);
     }
 }

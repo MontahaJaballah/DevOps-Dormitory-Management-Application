@@ -15,25 +15,25 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
 public class Bloc implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name="idBloc")
-    Long idBloc; // Clé primaire
-     String nomBloc;
-     Long capaciteBloc;
-    @OneToMany(mappedBy = "bloc",fetch = FetchType.EAGER)
-  //  @JsonIgnore
-    List<Chambre> chambres;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idBloc")
+    private Long idBloc;
+
+    private String nomBloc;
+
+    private Long capaciteBloc;
+
+    @OneToMany(mappedBy = "bloc", fetch = FetchType.EAGER)
+    private transient List<Chambre> chambres;
+
     @ManyToOne
     @JsonIgnore
-     Foyer foyer;
-
-
-
-
-
+    private Foyer foyer;
 
     @Override
     public String toString() {
@@ -41,24 +41,21 @@ public class Bloc implements Serializable {
                 "idBloc=" + idBloc +
                 ", nomBloc='" + nomBloc + '\'' +
                 ", capaciteBloc=" + capaciteBloc +
-                ", chambres=" + chambres +
-                ", foyer=" + foyer +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bloc bloc = (Bloc) o;
-        return Objects.equals(idBloc, bloc.idBloc) && Objects.equals(nomBloc, bloc.nomBloc) && Objects.equals(capaciteBloc, bloc.capaciteBloc) && Objects.equals(chambres, bloc.chambres) && Objects.equals(foyer, bloc.foyer);
+        if (!(o instanceof Bloc)) return false;
+        var bloc = (Bloc) o;
+        return Objects.equals(idBloc, bloc.idBloc)
+                && Objects.equals(nomBloc, bloc.nomBloc)
+                && Objects.equals(capaciteBloc, bloc.capaciteBloc);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idBloc, nomBloc, capaciteBloc, chambres, foyer);
+        return Objects.hash(idBloc, nomBloc, capaciteBloc);
     }
-
-
 }
-
