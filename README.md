@@ -20,7 +20,7 @@ Built with **Spring Boot** and **MySQL**, the app leverages tools like **Jenkins
 ## 🛠️ DevOps Pipeline Architecture
 Below is the architecture of the DevOps pipeline implemented for this project:
 
-![DevOps Pipeline Architecture](pipeline-architecture.png)
+![DevOps Pipeline Architecture](foyer/Devops-Monta.drawio.png)
 
 ### **Pipeline Stages:**
 - **Clean & Compile:** Use Maven to clean and compile the code.  
