@@ -87,7 +87,7 @@ foyer/<br>
 
 ### **1. Clone the Repository**
 ```bash
-git clone https://github.com/<your-username>/dormitory-management.git
+git clone https://github.com/MontahaJaballah/DevOps-Dormitory-Management-Application.git
 cd dormitory-management
 ````
 <br>
